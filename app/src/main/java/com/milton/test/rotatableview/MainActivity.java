@@ -48,9 +48,14 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void FloatingView2() {
-        View root = View.inflate(this, R.layout.custom_view, null);
+        View root = View.inflate(this, R.layout.custom_view2, null);
         rotatableView = RotatableView.getInstance(this);
         rotatableView.show(root);
     }
 
+    @Override
+    protected void onStop() {
+        super.onStop();
+        RotatableView.getInstance(this).dismiss();
+    }
 }

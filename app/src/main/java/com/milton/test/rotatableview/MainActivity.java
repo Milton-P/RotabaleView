@@ -6,12 +6,19 @@ import android.provider.Settings;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.Button;
+import android.widget.GridView;
 
 public class MainActivity extends AppCompatActivity {
 
     RotatableView rotatableView;
     RotatableWindow rotatableWindow;
+    GridView body;
+    GridView tab;
+    TabAdapter tabAdapter;
+    TabAdapter[] bodyAdapters = new TabAdapter[2];
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,8 +39,10 @@ public class MainActivity extends AppCompatActivity {
         button2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                android.util.Log.d("milton","XXX FloatingView@222222 ");
-                FloatingView2();
+                android.util.Log.d("milton","tab view ");
+                //FloatingView2();
+                RotatableWindow rotatableWindow = new RotatableWindow(MainActivity.this);
+                rotatableWindow.show(getView(),view);
             }
         });
 
@@ -94,5 +103,35 @@ public class MainActivity extends AppCompatActivity {
     protected void onStop() {
         super.onStop();
         //RotatableView.getInstance(this).dismiss();
+    }
+
+    public View getView () {
+        View content = View.inflate(this, R.layout.tab_view, null);
+        tab = content.findViewById(R.id.tab);
+        body = content.findViewById(R.id.body);
+        tabAdapter = new TabAdapter(this, new String[] { "video",
+                "photo" });
+        tab.setAdapter(tabAdapter);
+        tab.setOnItemClickListener(new TabClickEvent());
+
+        bodyAdapters[0] = new TabAdapter(this, new String[] { "photo",
+                "test2",  "photo", "test4",   "photo",
+                "test2",  "photo", "test4" });
+        bodyAdapters[1] = new TabAdapter(this, new String[] { "video",
+                "test2",  "video", "test4",   "video",
+                "test2",  "video", "test4" });
+        tab.setSelection(0);
+        body.setAdapter(bodyAdapters[0]);
+        return content;
+    }
+
+    class TabClickEvent implements AdapterView.OnItemClickListener {
+        @Override
+        public void onItemClick(AdapterView<?> arg0, View arg1, int position,
+                                long id) {
+            android.util.Log.d("milton","test onItemClick");
+            tab.setSelection(position);
+            body.setAdapter(bodyAdapters[position]);
+        }
     }
 }

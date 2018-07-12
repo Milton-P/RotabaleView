@@ -11,11 +11,14 @@ import android.widget.Button;
 public class MainActivity extends AppCompatActivity {
 
     RotatableView rotatableView;
+    RotatableWindow rotatableWindow;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         setContentView(R.layout.activity_main);
+
         Button button = findViewById(R.id.button);
         button.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -33,12 +36,20 @@ public class MainActivity extends AppCompatActivity {
                 FloatingView2();
             }
         });
+
+        Button button3 = findViewById(R.id.test);
+        button3.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                popwindow(view);
+            }
+        });
     }
 
     private void FloatingView1() {
         android.util.Log.d("milton"," FloatingView1 ");
-        View root = View.inflate(this, R.layout.custom_view, null);
-        Button buttonCancel = root.findViewById(R.id.cancel);
+        View content = View.inflate(this, R.layout.custom_view, null);
+        Button buttonCancel = content.findViewById(R.id.cancel);
         buttonCancel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -47,13 +58,27 @@ public class MainActivity extends AppCompatActivity {
             }
         });
         rotatableView = RotatableView.getInstance(this);
-        rotatableView.show(root);
+        rotatableView.show(content);
     }
 
     private void FloatingView2() {
-        View root = View.inflate(this, R.layout.custom_view2, null);
+        View content = View.inflate(this, R.layout.custom_view2, null);
         rotatableView = RotatableView.getInstance(this);
-        rotatableView.show(root);
+        rotatableView.show(content);
+    }
+
+    private void popwindow(View view) {
+        android.util.Log.d("milton"," popwindow ");
+        View content = View.inflate(this, R.layout.custom_view, null);
+        Button buttonCancel = content.findViewById(R.id.cancel);
+        buttonCancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                rotatableWindow.dismiss();
+            }
+        });
+        RotatableWindow rotatableWindow = new RotatableWindow(MainActivity.this);
+        rotatableWindow.show(content,view);
     }
 
     @Override

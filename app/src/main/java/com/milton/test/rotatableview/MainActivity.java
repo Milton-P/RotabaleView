@@ -1,5 +1,8 @@
 package com.milton.test.rotatableview;
 
+import android.content.Intent;
+import android.net.Uri;
+import android.provider.Settings;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -54,8 +57,17 @@ public class MainActivity extends AppCompatActivity {
     }
 
     @Override
+    protected void onResume() {
+        super.onResume();
+        if(!Settings.canDrawOverlays(getApplicationContext())) {
+            Intent intent = new Intent(Settings.ACTION_MANAGE_OVERLAY_PERMISSION, Uri.parse("package:" + getPackageName()));
+            startActivity(intent);
+        }
+    }
+
+    @Override
     protected void onStop() {
         super.onStop();
-        RotatableView.getInstance(this).dismiss();
+        //RotatableView.getInstance(this).dismiss();
     }
 }

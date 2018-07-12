@@ -3,6 +3,7 @@ package com.milton.test.rotatableview;
 import android.content.Context;
 import android.content.res.Configuration;
 import android.graphics.PixelFormat;
+import android.os.Build;
 import android.view.Gravity;
 import android.view.OrientationEventListener;
 import android.view.View;
@@ -56,7 +57,13 @@ public class RotatableView extends LinearLayout {
             mContent.addView(customView, lp);
         }
 
-        WindowManager.LayoutParams layoutParams = new WindowManager.LayoutParams(WindowManager.LayoutParams.TYPE_TOAST);
+        WindowManager.LayoutParams layoutParams = new WindowManager.LayoutParams();
+
+        if (Build.VERSION.SDK_INT>=26) {
+            layoutParams.type= WindowManager.LayoutParams.TYPE_APPLICATION_OVERLAY;
+        }else{
+            layoutParams.type= WindowManager.LayoutParams.TYPE_SYSTEM_ALERT;
+        }
         layoutParams.flags = WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE;
         layoutParams.flags |= WindowManager.LayoutParams.FLAG_WATCH_OUTSIDE_TOUCH;
         layoutParams.width = ViewGroup.LayoutParams.MATCH_PARENT;
@@ -100,6 +107,7 @@ public class RotatableView extends LinearLayout {
         mViewPropertyAnimator.cancel();
         switch (oritation) {
             case 0:
+                //setRotation(0);
                 mViewPropertyAnimator.rotation(0).setDuration(1000);
                 break;
             case 1:

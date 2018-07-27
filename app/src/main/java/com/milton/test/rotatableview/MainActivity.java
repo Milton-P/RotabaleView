@@ -30,7 +30,7 @@ public class MainActivity extends AppCompatActivity {
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                android.util.Log.d("milton","XXX FloatingView1 ");
+                android.util.Log.d("milton","通过windowManager实现 1");
                 FloatingView1();
             }
         });
@@ -39,10 +39,8 @@ public class MainActivity extends AppCompatActivity {
         button2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                android.util.Log.d("milton","tab view ");
-                //FloatingView2();
-                RotatableWindow rotatableWindow = new RotatableWindow(MainActivity.this);
-                rotatableWindow.show(getView(),view);
+                /*android.util.Log.d("milton","通过windowManager实现 1");
+                FloatingView2();*/
             }
         });
 
@@ -50,7 +48,9 @@ public class MainActivity extends AppCompatActivity {
         button3.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                popwindow(view);
+                android.util.Log.d("milton","通过模仿popupwind实现 ");
+                RotatableWindow rotatableWindow = new testRotableWindow(MainActivity.this);
+                rotatableWindow.show();
             }
         });
     }
@@ -74,20 +74,6 @@ public class MainActivity extends AppCompatActivity {
         View content = View.inflate(this, R.layout.custom_view2, null);
         rotatableView = RotatableView.getInstance(this);
         rotatableView.show(content);
-    }
-
-    private void popwindow(View view) {
-        android.util.Log.d("milton"," popwindow ");
-        View content = View.inflate(this, R.layout.custom_view, null);
-        Button buttonCancel = content.findViewById(R.id.cancel);
-        buttonCancel.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                rotatableWindow.dismiss();
-            }
-        });
-        RotatableWindow rotatableWindow = new RotatableWindow(MainActivity.this);
-        rotatableWindow.show(content,view);
     }
 
     @Override
